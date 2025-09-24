@@ -49,9 +49,9 @@
         </div>
         <div class="hero-text col-md-6">
             {% if hero %}
-            <h4 class="text-info">{{ hero.title }}</h4>
-            <h1 class="text-warning"> <span class="typing" data-text="{{ hero.subtitle }}"> {{ hero.subtitle }}</span></h1>
-            <p class="text-secondary">{{ hero.description }}</p>
+            <h4 class="text-info">{{ hero.title|safe }}</h4>
+            <h1 class="text-warning"> <span class="typing" data-text="{{ hero.subtitle }}"> {{ hero.subtitle|safe }}</span></h1>
+            <p class="text-secondary">{{ hero.description|safe  }}</p>
             {% endif %}
             <a href="#about-me" class="btn btn-outline-info " id="about-me-button">About Me</a>
         </div>
@@ -72,7 +72,7 @@
 
             <div class="col-md-7">
                 <h2 class="mb-3 border-bottom border-secondary pb-2">{{ about.title }}</h2>
-                <p>{{ about.content|linebreaks }}</p>
+                <p>{{ about.content|safe }}</p>
             </div>
         </div>
     </div>
@@ -80,30 +80,40 @@
 
 <!-- SKILLS & CERTIFICATES -->
 <section id="skills" class="py-5 text-light">
-    <div class="container">
-        <h2 id="certificates-skills-title" class="text-center mb-5 border-bottom pb-2">Certificates & Skills</h2>
-        <div class="certificates-wrapper">
-            {% for cert in certificates %}
-            <div class="card bg-dark text-light">
-                <div class="card-body">
-                    <h5 class="card-title">{{ cert.title }} {% if cert.platform %} – {{ cert.platform }}{% endif %}</h5>
-                    <p class="card-text small text-muted">Completion: {{ cert.completion_year }}</p>
-                    <ul>
-                        {% for detail in cert.details.splitlines %}
-                        <li>{{ detail }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% if cert.link %}
-                        <a href="{{ cert.link }}" target="_blank" class="btn btn-outline-info btn-sm">View Certificate</a>
-                    {% elif cert.file %}
-                        <a href="{{ cert.file.url }}" target="_blank" class="btn btn-outline-info btn-sm">View</a>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
+  <div class="container">
+    <h2 id="certificates-skills-title" class="text-center mb-5 border-bottom pb-2">Certificates & Skills</h2>
+
+    <!-- Scrollable grid -->
+    <div class="certificates-wrapper overflow-auto">
+      <div class="d-grid" 
+           style="grid-auto-flow: column; grid-template-rows: repeat(2, 1fr); gap: 2rem; height: 100%; padding-bottom: 1rem;">
+        
+        {% for cert in certificates %}
+        <div class="card bg-dark text-light flex-shrink-0 shadow-lg" style="width: 500px; min-height: 200px; padding: 1.5rem;">
+          <div class="card-body">
+            <h4 class="card-title mb-3">
+              {{ cert.title|safe }} {% if cert.platform %} – {{ cert.platform }}{% endif %}
+            </h4>
+            <p class="card-text text-muted">Completion: {{ cert.completion_year }}</p>
+            <ul style="font-size: 1.05rem;">
+              {% for detail in cert.details.splitlines %}
+              <li>{{ detail|safe }}</li>
+              {% endfor %}
+            </ul>
+            {% if cert.link %}
+              <a href="{{ cert.link }}" target="_blank" class="btn btn-outline-info btn-lg mt-2">View Certificate</a>
+            {% elif cert.file %}
+              <a href="{{ cert.file.url }}" target="_blank" class="btn btn-outline-info btn-lg mt-2">View Certificate</a>
+            {% endif %}
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
+  </div>
 </section>
+
+
 
 <!-- PROJECTS -->
 <section id="projects" class="py-5 text-light">
@@ -123,13 +133,13 @@
                     {% endif %}
                 </div>
                 <div class="col-md-8">
-                    <h5 class="card-title">{{ project.title }}</h5>
-                    <p class="text">{{ project.short_description }}</p>
+                    <h5 class="card-title">{{ project.title|safe }}</h5>
+                    <p class="text">{{ project.short_description|safe }}</p>
                     <button class="btn btn-outline-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#project{{ forloop.counter }}Details">
                         Details
                     </button>
                     <div class="collapse mt-3" id="project{{ forloop.counter }}Details">
-                        <p>{{ project.details }}</p>
+                        <p>{{ project.details|safe }}</p>
                         <p class="small text-info">Release Date: {{ project.release_date }}</p>
                         {% if project.github_link %}
                         <a href="{{ project.github_link }}" target="_blank" class="btn btn-outline-info btn-sm">GitHub</a>
