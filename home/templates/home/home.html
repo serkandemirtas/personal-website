@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<!-- HEADER -->
+<header>
+    <nav class="navbar navbar-expand-lg fixed-top my-navbar">
+        <div class="container">
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon bg-secondary"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about-me">About Me</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    {% for social in social_links %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ social.url }}" target="_blank" aria-label="{{ social.platform }}">
+                            <i class="{{ social.icon_class }} fa-lg"></i>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero d-flex align-items-center py-5" style="min-height:100vh;">
+    <div class="container d-flex flex-wrap justify-content-between">
+        <div class="hero-img col-md-5 text-center">
+            {% if hero %}
+            <dotlottie-wc src="{{ hero.lottie_url }}" style="width: 600px; height: 600px" autoplay loop></dotlottie-wc>
+            {% endif %}
+        </div>
+        <div class="hero-text col-md-6">
+            {% if hero %}
+            <h4 class="text-info">{{ hero.title }}</h4>
+            <h1 class="text-warning"> <span class="typing" data-text="{{ hero.subtitle }}"> {{ hero.subtitle }}</span></h1>
+            <p class="text-secondary">{{ hero.description }}</p>
+            {% endif %}
+            <a href="#about-me" class="btn btn-outline-info " id="about-me-button">About Me</a>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT ME -->
+<section id="about-me" class="py-5 text-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-5 mb-4 mb-md-0 text-center">
+                {% if about and about.profile_image %}
+                    <img src="{{ about.profile_image.url }}" alt="Profile" class="img-fluid rounded-circle border border-4 border-success shadow">
+                {% else %}
+                    <img src="{% static 'images/default-profile.png' %}" alt="Profile" class="img-fluid rounded-circle border border-4 border-success shadow">
+                {% endif %}
+            </div>
+
+            <div class="col-md-7">
+                <h2 class="mb-3 border-bottom border-secondary pb-2">{{ about.title }}</h2>
+                <p>{{ about.content|linebreaks }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SKILLS & CERTIFICATES -->
+<section id="skills" class="py-5 text-light">
+    <div class="container">
+        <h2 id="certificates-skills-title" class="text-center mb-5 border-bottom pb-2">Certificates & Skills</h2>
+        <div class="certificates-wrapper">
+            {% for cert in certificates %}
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h5 class="card-title">{{ cert.title }} {% if cert.platform %} – {{ cert.platform }}{% endif %}</h5>
+                    <p class="card-text small text-muted">Completion: {{ cert.completion_year }}</p>
+                    <ul>
+                        {% for detail in cert.details.splitlines %}
+                        <li>{{ detail }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% if cert.link %}
+                        <a href="{{ cert.link }}" target="_blank" class="btn btn-outline-info btn-sm">View Certificate</a>
+                    {% elif cert.file %}
+                        <a href="{{ cert.file.url }}" target="_blank" class="btn btn-outline-info btn-sm">View</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="py-5 text-light">
+    <div class="container">
+        <h2 class="text-center mb-5 border-bottom pb-2">My Projects</h2>
+        {% for project in projects %}
+        <div class="card bg-dark text-light mb-4 p-3 rounded">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-4 text-center">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid rounded">
+                    {% elif project.video %}
+                    <video width="100%" controls>
+                        <source src="{{ project.video.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="text">{{ project.short_description }}</p>
+                    <button class="btn btn-outline-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#project{{ forloop.counter }}Details">
+                        Details
+                    </button>
+                    <div class="collapse mt-3" id="project{{ forloop.counter }}Details">
+                        <p>{{ project.details }}</p>
+                        <p class="small text-info">Release Date: {{ project.release_date }}</p>
+                        {% if project.github_link %}
+                        <a href="{{ project.github_link }}" target="_blank" class="btn btn-outline-info btn-sm">GitHub</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-5 text-light bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5 border-bottom pb-2">Contact</h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4 mx-auto">
+                <form method="post" action="{% url 'contact' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="id_name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" 
+                               id="id_name" name="name" value="{{ form.name.value|default:'' }}" required>
+                        {% for error in form.name.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email</label>
+                        <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
+                               id="id_email" name="email" value="{{ form.email.value|default:'' }}" required>
+                        {% for error in form.email.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_phone" class="form-label">Phone</label>
+                        <input type="tel" class="form-control {% if form.phone.errors %}is-invalid{% endif %}" 
+                               id="id_phone" name="phone" value="{{ form.phone.value|default:'' }}">
+                        {% for error in form.phone.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_message" class="form-label">Message</label>
+                        <textarea class="form-control {% if form.message.errors %}is-invalid{% endif %}" 
+                                  id="id_message" name="message" rows="5">{{ form.message.value|default:'' }}</textarea>
+                        {% for error in form.message.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_captcha" class="form-label">Captcha</label>
+                        {{ form.captcha }}
+                        {% for error in form.captcha.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                        {{ form.website }}
+                    <button type="submit" class="btn btn-outline-info">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Toast Container -->
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% for message in messages %}
+      <div class="toast align-items-center text-bg-{{ message.tags }} border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            {{ message }}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer class="footer bg-dark text-light py-4">
+    <div class="container">
+        <div class="social-container">
+            {% for social in social_links %}
+                <a href="{{ social.url }}" target="_blank" class="social-icon" aria-label="{{ social.platform }}">
+                    <i class="{{ social.icon_class }}"></i>
+                </a>
+            {% endfor %}
+        </div>
+        <p class="text-center copyright mb-0"> &copy; 2025 Serkan Demirtaş — All Rights Reserved. </p>
+    </div>
+</footer>
+
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/script.js' %}" defer></script>
+</body>
+</html>
