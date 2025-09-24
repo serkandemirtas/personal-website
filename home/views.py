@@ -7,6 +7,10 @@ from .forms import ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django_ratelimit.decorators import ratelimit
+from django.http import HttpResponse
+
+def health(request):
+    return HttpResponse("OK")
 
 def home(request):
     hero = Hero.objects.first()               
