@@ -141,7 +141,7 @@ header nav ul li a:hover {
   transition: background 0.3s, color 0.3s;
 }
 
-#about-me-button {
+#cv-view-button {
   padding: 15px 40px;   
   font-size: 1.3rem;    
   border-width: 3px;    

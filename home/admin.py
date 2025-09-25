@@ -1,6 +1,6 @@
 # home/admin.py
 from django.contrib import admin
-from .models import Hero, AboutMe, Certificate, Project, SocialLink, ContactMessage
+from .models import Hero, AboutMe, Certificate, Project, SocialLink, ContactMessage , CV
 from django.utils.html import mark_safe
 
 @admin.register(Hero)
@@ -40,3 +40,16 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'phone', 'created_at')
     search_fields = ('name', 'email', 'message')
     list_filter = ('created_at',)
+
+@admin.register(CV)
+class CVAdmin(admin.ModelAdmin):
+    list_display = ("title", "uploaded_at", "file_link") 
+    search_fields = ("title",)  
+    ordering = ("-uploaded_at",)  
+
+    def file_link(self, obj):
+        if obj.file:
+            return f'<a href="{obj.file.url}" target="_blank">View CV</a>'
+        return "No file"
+    file_link.allow_tags = True
+    file_link.short_description = "CV File"

@@ -1,6 +1,6 @@
 # home/views.py
 from .forms import ContactForm
-from .models import Hero, AboutMe, Certificate, Project, SocialLink
+from .models import Hero, AboutMe, Certificate, Project, SocialLink , CV
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ContactForm
@@ -16,6 +16,7 @@ def home(request):
     projects = Project.objects.all().order_by('-release_date') 
     social_links = SocialLink.objects.all()  
     form = ContactForm()
+    cv = CV.objects.last()  
 
     context = {
         "hero": hero,
@@ -24,6 +25,7 @@ def home(request):
         "projects": projects,
         "social_links": social_links,
         "form" : form,
+        "cv" : cv,
     }
     return render(request, "home/home.html", context)
 
@@ -67,3 +69,5 @@ Message:
         form = ContactForm()
 
     return render(request, 'contact.html', {"form": form})
+
+
