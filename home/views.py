@@ -9,9 +9,6 @@ from django.conf import settings
 from django_ratelimit.decorators import ratelimit
 from django.http import HttpResponse
 
-def health(request):
-    return HttpResponse("OK")
-
 def home(request):
     hero = Hero.objects.first()               
     about = AboutMe.objects.first()          

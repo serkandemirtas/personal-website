@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['djangowebsite-env.eba-p985nnpk.eu-north-1.elasticbeanstalk.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),  # Şifre buradan alınıyor
+        'PASSWORD': config('DB_PASSWORD'),  
         'HOST': config('DB_HOST'),
         'PORT': config('DB_PORT', cast=int),
     }
