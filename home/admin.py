@@ -53,3 +53,5 @@ class CVAdmin(admin.ModelAdmin):
         return "No file"
     file_link.allow_tags = True
     file_link.short_description = "CV File"
+
+

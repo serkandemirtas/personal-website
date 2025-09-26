@@ -3,11 +3,13 @@ from .forms import ContactForm
 from .models import Hero, AboutMe, Certificate, Project, SocialLink , CV
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django_ratelimit.decorators import ratelimit
-from django.http import HttpResponse
+from django.contrib.admin.views.decorators import staff_member_required
+import os, shutil, mimetypes
+from django.http import JsonResponse
+
 
 def home(request):
     hero = Hero.objects.first()               
@@ -69,5 +71,4 @@ Message:
         form = ContactForm()
 
     return render(request, 'contact.html', {"form": form})
-
 

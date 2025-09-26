@@ -75,7 +75,6 @@ class ContactMessage(models.Model):
     def __str__(self):
         return f"{self.name} - {self.email}"
     
-from django.db import models
 
 class CV(models.Model):
     title = models.CharField(max_length=100, default="My CV")
@@ -84,4 +83,6 @@ class CV(models.Model):
 
     def __str__(self):
         return self.title
+
+
 

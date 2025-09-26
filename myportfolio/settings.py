@@ -208,6 +208,8 @@ JAZZMIN_SETTINGS = {
         # Url that gets reversed (Permissions can be added)
         {"name": "Dashboard",  "url": "admin:index", "permissions": ["auth.view_user"]},
 
+        {"name": "VIEW SİTE", "url": "/", "new_window": True},
+  
         # App with dropdown menu to all its models pages (Permissions checked against models)
         {"app": "home"},
 
@@ -222,8 +224,8 @@ JAZZMIN_SETTINGS = {
 
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
     "usermenu_links": [
+        {"model": "auth.user"},
         {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
-        {"model": "auth.user"}
     ],
 
     #############
