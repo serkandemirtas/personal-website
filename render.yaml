@@ -2,7 +2,7 @@ services:
   - type: web
     name: myportfolio
     runtime: python
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input --clear && python manage.py migrate"
     startCommand: "gunicorn myportfolio.wsgi:application"
     envVars:
       - key: SECRET_KEY
