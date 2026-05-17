@@ -1,3 +1,4 @@
+import mimetypes
 import uuid
 from django.core.files.storage import Storage
 from django.core.files.base import ContentFile
@@ -5,7 +6,7 @@ from django.db import models
 
 
 class StoredFile(models.Model):
-    key = models.CharField(max_length=100, unique=True)
+    key = models.CharField(max_length=200, unique=True)
     filename = models.CharField(max_length=255)
     content_type = models.CharField(max_length=100, default='application/octet-stream')
     data = models.BinaryField()
@@ -22,9 +23,13 @@ class DatabaseStorage(Storage):
         return ('home.db_storage.DatabaseStorage', [], {})
 
     def _save(self, name, content):
-        key = f"{uuid.uuid4().hex}_{name}"
+        safe_name = name[-60:] if len(name) > 60 else name  # max key: 32+1+60=93
+        key = f"{uuid.uuid4().hex}_{safe_name}"
+        try:
+            content.seek(0)
+        except (AttributeError, OSError):
+            pass
         data = content.read()
-        import mimetypes
         content_type, _ = mimetypes.guess_type(name)
         StoredFile.objects.create(
             key=key,
