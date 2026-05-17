@@ -8,7 +8,17 @@ from django.conf import settings
 from django_ratelimit.decorators import ratelimit
 from django.contrib.admin.views.decorators import staff_member_required
 import os, shutil, mimetypes
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+
+
+def serve_db_file(request, key):
+    from .db_storage import StoredFile
+    try:
+        obj = StoredFile.objects.get(key=key)
+        return HttpResponse(bytes(obj.data), content_type=obj.content_type)
+    except StoredFile.DoesNotExist:
+        from django.http import Http404
+        raise Http404
 
 
 def home(request):

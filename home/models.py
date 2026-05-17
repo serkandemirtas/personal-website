@@ -2,6 +2,9 @@ import os
 from django.db import models
 from django.core.exceptions import ValidationError
 from tinymce.models import HTMLField
+from .db_storage import DatabaseStorage, StoredFile
+
+_db_storage = DatabaseStorage()
 
 def validate_file_extension(value):
     allowed = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.webp']
@@ -25,10 +28,10 @@ class AboutMe(models.Model):
     title = models.CharField(max_length=150)
     content = HTMLField()  
     profile_image = models.ImageField(
-        upload_to='profile/',
+        storage=_db_storage,
+        upload_to='',
         null=True,
         blank=True,
-        default='defaults/default.png'
     )
 
     def __str__(self):

@@ -157,14 +157,14 @@ if _railway_domain:
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
-import urllib.parse as _urlparse
-_cloudinary_url = os.environ.get('CLOUDINARY_URL', '')
-if _cloudinary_url:
-    _c = _urlparse.urlparse(_cloudinary_url)
+import cloudinary as _cloudinary
+_cloudinary.config(cloudinary_url=os.environ.get('CLOUDINARY_URL', ''))
+_cld = _cloudinary.config()
+if _cld.cloud_name and _cld.api_key and _cld.api_secret:
     CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': _c.hostname,
-        'API_KEY': _c.username,
-        'API_SECRET': _c.password,
+        'CLOUD_NAME': _cld.cloud_name,
+        'API_KEY': _cld.api_key,
+        'API_SECRET': _cld.api_secret,
     }
     _cloudinary_ready = True
 else:
