@@ -474,8 +474,8 @@ header nav.scrolled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 380px;
-  height: 380px;
+  width: clamp(300px, 38vw, 460px);
+  height: clamp(300px, 38vw, 460px);
 }
 .hero-photo-blob {
   position: absolute;
@@ -943,8 +943,8 @@ header nav.scrolled {
     font-size: 2.4rem;
   }
   .hero-photo-wrapper {
-    width: 260px;
-    height: 260px;
+    width: clamp(240px, 60vw, 320px);
+    height: clamp(240px, 60vw, 320px);
   }
   .col-md-5.mb-4.mb-md-0.text-center img {
     width: 220px;
@@ -973,8 +973,8 @@ header nav.scrolled {
     font-size: 0.88rem;
   }
   .hero-photo-wrapper {
-    width: 210px;
-    height: 210px;
+    width: clamp(200px, 70vw, 260px);
+    height: clamp(200px, 70vw, 260px);
   }
   .btn {
     padding: 10px 20px;
