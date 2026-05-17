@@ -1,7 +1,7 @@
 # home/admin.py
 from django.contrib import admin
 from .models import Hero, AboutMe, Certificate, Project, SocialLink, ContactMessage , CV
-from django.utils.html import mark_safe
+from django.utils.html import mark_safe, escape
 
 @admin.register(Hero)
 class HeroAdmin(admin.ModelAdmin):
@@ -14,7 +14,7 @@ class AboutMeAdmin(admin.ModelAdmin):
 
     def profile_image_preview(self, obj):
         if obj.profile_image:
-            return mark_safe(f'<img src="{obj.profile_image.url}" width="100" />')
+            return mark_safe(f'<img src="{escape(obj.profile_image.url)}" width="100" />')
         return ""
     profile_image_preview.allow_tags = True
     profile_image_preview.short_description = "Profile Preview"
@@ -49,9 +49,8 @@ class CVAdmin(admin.ModelAdmin):
 
     def file_link(self, obj):
         if obj.file:
-            return f'<a href="{obj.file.url}" target="_blank">View CV</a>'
+            return mark_safe(f'<a href="{escape(obj.file.url)}" target="_blank">View CV</a>')
         return "No file"
-    file_link.allow_tags = True
     file_link.short_description = "CV File"
 
 

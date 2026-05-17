@@ -1,5 +1,13 @@
+import os
 from django.db import models
+from django.core.exceptions import ValidationError
 from tinymce.models import HTMLField
+
+def validate_file_extension(value):
+    allowed = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.webp']
+    ext = os.path.splitext(value.name)[1].lower()
+    if ext not in allowed:
+        raise ValidationError(f"Desteklenmeyen dosya tipi: {ext}. İzin verilenler: {', '.join(allowed)}")
 
 
 class Hero(models.Model):
@@ -34,7 +42,7 @@ class Certificate(models.Model):
     completion_year = models.IntegerField()
     details = HTMLField(blank=True) 
     link = models.URLField(blank=True)
-    file = models.FileField(upload_to='certificates/', blank=True, null=True)
+    file = models.FileField(upload_to='certificates/', blank=True, null=True, validators=[validate_file_extension])
 
     def __str__(self):
         return self.title
@@ -69,7 +77,7 @@ class ContactMessage(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=200)
     phone = models.CharField(max_length=11, blank=True)
-    message = HTMLField()  
+    message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -78,7 +86,7 @@ class ContactMessage(models.Model):
 
 class CV(models.Model):
     title = models.CharField(max_length=100, default="My CV")
-    file = models.FileField(upload_to='cv/')  
+    file = models.FileField(upload_to='cv/', validators=[validate_file_extension])
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
