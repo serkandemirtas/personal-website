@@ -903,6 +903,31 @@ header nav.scrolled {
   margin-top: 8px;
 }
 
+/* -------------------- TOASTS -------------------- */
+.toast-container .toast {
+  min-width: 280px;
+  border-radius: 12px !important;
+  font-size: 0.88rem;
+  font-weight: 500;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.toast-container .toast.text-bg-success {
+  background: rgba(0, 200, 100, 0.18) !important;
+  border-color: rgba(0, 200, 100, 0.35) !important;
+  color: #6dffb3 !important;
+}
+.toast-container .toast.text-bg-danger {
+  background: rgba(220, 60, 60, 0.18) !important;
+  border-color: rgba(220, 60, 60, 0.35) !important;
+  color: #ff8a8a !important;
+}
+.toast-container .toast .btn-close-white {
+  filter: invert(1) opacity(0.6);
+}
+
 /* -------------------- SCROLL TO TOP -------------------- */
 #scroll-top {
   position: fixed;

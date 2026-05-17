@@ -74,13 +74,22 @@ Message:
             except Exception as e:
                 print("Mail gönderilemedi:", e)
 
-            messages.success(request, "Your message has been sent successfully ✅")
+            messages.success(request, "Your message has been sent successfully.")
             return redirect('/')
         else:
-            messages.error(request, "Please correct any errors in the form ❌")
-            return redirect('/')
+            context = {
+                "hero": Hero.objects.first(),
+                "about": AboutMe.objects.first(),
+                "certificates": Certificate.objects.all(),
+                "projects": Project.objects.all().order_by('-release_date'),
+                "social_links": SocialLink.objects.all(),
+                "skills": Skill.objects.all(),
+                "form": form,
+                "cv": CV.objects.last(),
+            }
+            return render(request, 'home/home.html', context)
     else:
         form = ContactForm()
 
-    return render(request, 'contact.html', {"form": form})
+    return render(request, 'home/home.html', {"form": form})
 
