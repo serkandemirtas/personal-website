@@ -56,7 +56,7 @@
             <p class="text-secondary">{{ hero.description|safe  }}</p>
             {% endif %}
             {% if cv %}
-            <a href="{{ cv.file_url }}" target="_blank" class="btn btn-outline-info" id="cv-view-button">
+            <a href="{{ cv.file.url }}" target="_blank" class="btn btn-outline-info" id="cv-view-button">
                 CV View
             </a>
             {% else %}

@@ -24,3 +24,4 @@ tzdata==2025.2
 setuptools==80.9.0
 cloudinary==1.44.2
 django-cloudinary-storage==0.3.0
+django-db-file-storage==0.5.6.1

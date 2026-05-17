@@ -86,7 +86,12 @@ class ContactMessage(models.Model):
 
 class CV(models.Model):
     title = models.CharField(max_length=100, default="My CV")
-    file_url = models.URLField(max_length=500, blank=True, default='', help_text="Google Drive, Dropbox veya Cloudinary linki yapıştırın")
+    file = models.FileField(
+        upload_to='home.CV/file/filename',
+        storage='db_file_storage.storage.DatabaseFileStorage',
+        blank=True,
+        default='',
+    )
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
