@@ -309,6 +309,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Bot timing check
+  const tsField = document.getElementById('form_loaded_at');
+  if (tsField) tsField.value = Date.now();
+
   // Toast notifications
   document.querySelectorAll('.toast').forEach(el => {
     new bootstrap.Toast(el, { delay: 4000 }).show();

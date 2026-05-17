@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django_ratelimit.decorators import ratelimit
 from django.contrib.admin.views.decorators import staff_member_required
-import os, shutil, mimetypes, threading
+import os, shutil, mimetypes, threading, time
 from django.http import JsonResponse, HttpResponse
 
 
@@ -48,6 +48,16 @@ def home(request):
 @ratelimit(key='ip', rate='5/m', block=True)
 def contact_view(request):
     if request.method == "POST":
+        # Bot timing check: JS sets timestamp on page load; bots skip JS or submit instantly
+        try:
+            loaded_at = int(request.POST.get('form_loaded_at', 0))
+            elapsed = time.time() * 1000 - loaded_at
+            if loaded_at == 0 or elapsed < 4000:
+                messages.error(request, "Submission blocked. Please try again.")
+                return redirect('/')
+        except (ValueError, TypeError):
+            return redirect('/')
+
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
