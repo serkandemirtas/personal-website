@@ -16,8 +16,13 @@ def validate_file_extension(value):
 class Hero(models.Model):
     title = models.CharField(max_length=100)
     subtitle = models.CharField(max_length=150, blank=True)
-    description = HTMLField()  
-    lottie_url = models.URLField(blank=True)
+    description = HTMLField()
+    image = models.ImageField(
+        storage=_db_storage,
+        upload_to='',
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.title

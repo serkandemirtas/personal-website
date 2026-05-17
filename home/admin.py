@@ -6,6 +6,13 @@ from django.utils.html import mark_safe, escape
 @admin.register(Hero)
 class HeroAdmin(admin.ModelAdmin):
     list_display = ('title', 'subtitle')
+    readonly_fields = ('image_preview',)
+
+    def image_preview(self, obj):
+        if obj.image:
+            return mark_safe(f'<img src="{escape(obj.image.url)}" width="120" style="border-radius:8px;" />')
+        return ""
+    image_preview.short_description = "Image Preview"
 
 @admin.register(AboutMe)
 class AboutMeAdmin(admin.ModelAdmin):
