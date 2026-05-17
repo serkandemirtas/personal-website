@@ -84,10 +84,13 @@ def contact_view(request):
                     msg = EmailMultiAlternatives(subject, plain_text, from_email, recipient_list)
                     msg.attach_alternative(html_body, "text/html")
                     msg.send()
+                    print(f"[EMAIL] Sent to {recipient_list}")
                 except Exception as e:
-                    print("Mail gönderilemedi:", e)
+                    import traceback
+                    print(f"[EMAIL ERROR] {type(e).__name__}: {e}")
+                    traceback.print_exc()
 
-            threading.Thread(target=_send, daemon=True).start()
+            threading.Thread(target=_send, daemon=False).start()
 
             messages.success(request, "Your message has been sent successfully.")
             return redirect('/')
