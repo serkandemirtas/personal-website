@@ -48,8 +48,8 @@ class CVAdmin(admin.ModelAdmin):
     ordering = ("-uploaded_at",)  
 
     def file_link(self, obj):
-        if obj.file_url:
-            return mark_safe(f'<a href="{escape(obj.file_url)}" target="_blank">View CV</a>')
+        if obj.file:
+            return mark_safe(f'<a href="{escape(obj.file.url)}" target="_blank">View CV</a>')
         return "No file"
     file_link.short_description = "CV File"
 

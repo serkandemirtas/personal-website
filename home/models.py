@@ -43,9 +43,15 @@ class Certificate(models.Model):
     title = models.CharField(max_length=200)
     platform = models.CharField(max_length=100, blank=True)
     completion_year = models.IntegerField()
-    details = HTMLField(blank=True) 
+    details = HTMLField(blank=True)
     link = models.URLField(blank=True)
-    file = models.FileField(upload_to='certificates/', blank=True, null=True, validators=[validate_file_extension])
+    file = models.FileField(
+        storage=_db_storage,
+        upload_to='',
+        blank=True,
+        null=True,
+        validators=[validate_file_extension],
+    )
 
     def __str__(self):
         return self.title
@@ -55,9 +61,9 @@ class Certificate(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=200)
     short_description = models.CharField(max_length=255)
-    details = HTMLField()  
-    image = models.ImageField(upload_to='projects/images/', blank=True, null=True)
-    video = models.FileField(upload_to='projects/videos/', blank=True, null=True)
+    details = HTMLField()
+    image = models.ImageField(storage=_db_storage, upload_to='', blank=True, null=True)
+    video = models.FileField(storage=_db_storage, upload_to='', blank=True, null=True)
     github_link = models.URLField(blank=True)
     release_date = models.DateField()
 
@@ -89,7 +95,12 @@ class ContactMessage(models.Model):
 
 class CV(models.Model):
     title = models.CharField(max_length=100, default="My CV")
-    file_url = models.URLField(max_length=500, blank=True, default='', help_text="CV linkini buraya yapıştırın (Google Drive, Dropbox vb.)")
+    file = models.FileField(
+        storage=_db_storage,
+        upload_to='',
+        blank=True,
+        validators=[validate_file_extension],
+    )
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
