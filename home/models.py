@@ -31,7 +31,7 @@ class Hero(models.Model):
 
 class AboutMe(models.Model):
     title = models.CharField(max_length=150)
-    content = HTMLField()  
+    content = HTMLField()
     profile_image = models.ImageField(
         storage=_db_storage,
         upload_to='',
@@ -79,7 +79,7 @@ class Project(models.Model):
 
 class SocialLink(models.Model):
     platform = models.CharField(max_length=50)
-    icon_class = models.CharField(max_length=50)  
+    icon_class = models.CharField(max_length=50)
     url = models.URLField()
 
     def __str__(self):
@@ -96,7 +96,7 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.email}"
-    
+
 
 class CV(models.Model):
     title = models.CharField(max_length=100, default="My CV")
@@ -112,4 +112,13 @@ class CV(models.Model):
         return self.title
 
 
+class Skill(models.Model):
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=50, blank=True)
+    order = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name

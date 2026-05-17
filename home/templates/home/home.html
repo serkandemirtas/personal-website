@@ -154,6 +154,18 @@
       {% endfor %}
     </div>
   </div>
+
+  {% if skills %}
+  <div class="container mt-5">
+    <h4 class="skills-subtitle text-center mb-4">Skills</h4>
+    <div class="skills-badges">
+      {% for skill in skills %}
+      <span class="skill-badge" {% if skill.category %}data-category="{{ skill.category }}"{% endif %}>{{ skill.name }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
 </section>
 
 <!-- PROJECTS -->

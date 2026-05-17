@@ -1,6 +1,6 @@
 # home/views.py
 from .forms import ContactForm
-from .models import Hero, AboutMe, Certificate, Project, SocialLink , CV
+from .models import Hero, AboutMe, Certificate, Project, SocialLink, CV, Skill
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -24,11 +24,12 @@ def serve_db_file(request, key):
 def home(request):
     hero = Hero.objects.first()               
     about = AboutMe.objects.first()          
-    certificates = Certificate.objects.all() 
-    projects = Project.objects.all().order_by('-release_date') 
-    social_links = SocialLink.objects.all()  
+    certificates = Certificate.objects.all()
+    projects = Project.objects.all().order_by('-release_date')
+    social_links = SocialLink.objects.all()
+    skills = Skill.objects.all()
     form = ContactForm()
-    cv = CV.objects.last()  
+    cv = CV.objects.last()
 
     context = {
         "hero": hero,
@@ -36,8 +37,9 @@ def home(request):
         "certificates": certificates,
         "projects": projects,
         "social_links": social_links,
-        "form" : form,
-        "cv" : cv,
+        "skills": skills,
+        "form": form,
+        "cv": cv,
     }
     return render(request, "home/home.html", context)
 

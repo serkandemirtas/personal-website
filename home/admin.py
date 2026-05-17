@@ -1,6 +1,6 @@
 # home/admin.py
 from django.contrib import admin
-from .models import Hero, AboutMe, Certificate, Project, SocialLink, ContactMessage , CV
+from .models import Hero, AboutMe, Certificate, Project, SocialLink, ContactMessage, CV, Skill
 from django.utils.html import mark_safe, escape
 
 @admin.register(Hero)
@@ -47,6 +47,13 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'phone', 'created_at')
     search_fields = ('name', 'email', 'message')
     list_filter = ('created_at',)
+
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'order')
+    list_editable = ('order',)
+    search_fields = ('name', 'category')
+
 
 @admin.register(CV)
 class CVAdmin(admin.ModelAdmin):
