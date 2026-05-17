@@ -1,9 +1,9 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "pip install -r requirements.txt && python manage.py collectstatic --no-input --clear"
+buildCommand = "pip install -r requirements.txt"
 
 [deploy]
-startCommand = "python manage.py migrate && gunicorn myportfolio.wsgi:application"
+startCommand = "python manage.py collectstatic --no-input --clear && python manage.py migrate && gunicorn myportfolio.wsgi:application"
 healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
