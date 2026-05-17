@@ -3,7 +3,8 @@ from .forms import ContactForm
 from .models import Hero, AboutMe, Certificate, Project, SocialLink, CV, Skill
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.conf import settings
 from django_ratelimit.decorators import ratelimit
 from django.contrib.admin.views.decorators import staff_member_required
@@ -67,21 +68,22 @@ def contact_view(request):
             phone = form.cleaned_data.get('phone', '')
             message_text = form.cleaned_data['message']
 
-            subject = f"There is a message from your personal portfolio {name}"
-            message = f"""
-You have a new message:
-Full Name: {name}
-Email: {email}
-Phone: {phone}
-Message:
-    {message_text}
-                        """
+            subject = f"New message from {name} — Portfolio"
+            plain_text = f"From: {name}\nEmail: {email}\nPhone: {phone}\n\n{message_text}"
+            html_body = render_to_string('home/email_contact.html', {
+                'name': name,
+                'email': email,
+                'phone': phone,
+                'message': message_text,
+            })
             from_email = settings.DEFAULT_FROM_EMAIL
             recipient_list = [settings.ADMIN_EMAIL]
 
             def _send():
                 try:
-                    send_mail(subject, message, from_email, recipient_list)
+                    msg = EmailMultiAlternatives(subject, plain_text, from_email, recipient_list)
+                    msg.attach_alternative(html_body, "text/html")
+                    msg.send()
                 except Exception as e:
                     print("Mail gönderilemedi:", e)
 
