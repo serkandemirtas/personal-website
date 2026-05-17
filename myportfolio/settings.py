@@ -150,17 +150,6 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"
-        if os.environ.get("CLOUDINARY_CLOUD_NAME")
-        else "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
-
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "http://localhost").split(",")
 if _railway_domain:
     CSRF_TRUSTED_ORIGINS.append(f"https://{_railway_domain}")
@@ -168,10 +157,29 @@ if _railway_domain:
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+import urllib.parse as _urlparse
+_cloudinary_url = os.environ.get('CLOUDINARY_URL', '')
+if _cloudinary_url:
+    _c = _urlparse.urlparse(_cloudinary_url)
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': _c.hostname,
+        'API_KEY': _c.username,
+        'API_SECRET': _c.password,
+    }
+    _cloudinary_ready = True
+else:
+    CLOUDINARY_STORAGE = {}
+    _cloudinary_ready = False
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"
+        if _cloudinary_ready
+        else "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
 }
 
 
