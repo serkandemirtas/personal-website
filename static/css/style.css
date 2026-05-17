@@ -979,6 +979,12 @@ header nav.scrolled {
   .hero-text h1 {
     font-size: 2.4rem;
   }
+  .hero-img {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .hero-photo-wrapper {
     width: clamp(240px, 60vw, 320px);
     height: clamp(240px, 60vw, 320px);
