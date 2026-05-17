@@ -3,7 +3,6 @@ from .forms import ContactForm
 from .models import Hero, AboutMe, Certificate, Project, SocialLink, CV, Skill
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
 from django_ratelimit.decorators import ratelimit
@@ -81,9 +80,15 @@ def contact_view(request):
 
             def _send():
                 try:
-                    msg = EmailMultiAlternatives(subject, plain_text, from_email, recipient_list)
-                    msg.attach_alternative(html_body, "text/html")
-                    msg.send()
+                    import resend
+                    resend.api_key = settings.RESEND_API_KEY
+                    resend.Emails.send({
+                        "from": settings.DEFAULT_FROM_EMAIL,
+                        "to": recipient_list,
+                        "subject": subject,
+                        "text": plain_text,
+                        "html": html_body,
+                    })
                     print(f"[EMAIL] Sent to {recipient_list}")
                 except Exception as e:
                     import traceback

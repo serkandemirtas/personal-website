@@ -222,6 +222,7 @@ EMAIL_HOST_USER = "resend"
 EMAIL_HOST_PASSWORD = os.environ.get("RESEND_API_KEY")
 DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_FROM", "onboarding@resend.dev")
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL")
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 
 
 
