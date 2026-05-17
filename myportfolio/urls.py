@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
 from filebrowser.sites import site
 import os
 
 ADMIN_URL = os.environ.get("ADMIN_URL", "admin") 
 
 urlpatterns = [
+    path('health/', lambda request: HttpResponse("ok"), name='health'),
     path(f'{ADMIN_URL}/', admin.site.urls),
     path('', include('home.urls')),  
     path('captcha/', include('captcha.urls')),
