@@ -55,12 +55,10 @@
             <h1 class="text-warning"> <span class="typing" data-text="{{ hero.subtitle }}"> {{ hero.subtitle|safe }}</span></h1>
             <p class="text-secondary">{{ hero.description|safe  }}</p>
             {% endif %}
-            {% if cv %}
+            {% if cv and cv.file %}
             <a href="{{ cv.file.url }}" target="_blank" class="btn btn-outline-info" id="cv-view-button">
                 CV View
             </a>
-            {% else %}
-            <a  class="btn btn-outline-info" id="cv-view-button">No CV uploaded yet</a>
             {% endif %}
         </div>
     </div>
