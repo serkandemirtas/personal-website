@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django_ratelimit.decorators import ratelimit
 from django.contrib.admin.views.decorators import staff_member_required
-import os, shutil, mimetypes
+import os, shutil, mimetypes, threading
 from django.http import JsonResponse, HttpResponse
 
 
@@ -69,10 +69,13 @@ Message:
             from_email = settings.DEFAULT_FROM_EMAIL
             recipient_list = [settings.ADMIN_EMAIL]
 
-            try:
-                send_mail(subject, message, from_email, recipient_list)
-            except Exception as e:
-                print("Mail gönderilemedi:", e)
+            def _send():
+                try:
+                    send_mail(subject, message, from_email, recipient_list)
+                except Exception as e:
+                    print("Mail gönderilemedi:", e)
+
+            threading.Thread(target=_send, daemon=True).start()
 
             messages.success(request, "Your message has been sent successfully.")
             return redirect('/')

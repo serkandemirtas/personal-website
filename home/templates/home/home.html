@@ -247,13 +247,6 @@
                             <div class="invalid-feedback">{{ error }}</div>
                         {% endfor %}
                     </div>
-                    <div class="mb-3">
-                        <label for="id_captcha" class="form-label">Captcha</label>
-                        {{ form.captcha }}
-                        {% for error in form.captcha.errors %}
-                            <div class="invalid-feedback d-block">{{ error }}</div>
-                        {% endfor %}
-                    </div>
                     {{ form.website }}
                     <button type="submit" class="btn btn-outline-info">Send</button>
                 </form>

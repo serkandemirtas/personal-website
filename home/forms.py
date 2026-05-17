@@ -1,7 +1,6 @@
 import re
 from django import forms
 from .models import ContactMessage
-from captcha.fields import CaptchaField
 
 XSS_PATTERNS = re.compile(
     r'(<script|</script|javascript:|onerror\s*=|onload\s*=|onclick\s*=|'
@@ -38,7 +37,6 @@ def check_length(value, field_name, max_len):
 
 
 class ContactForm(forms.ModelForm):
-    captcha = CaptchaField()
     website = forms.CharField(required=False, widget=forms.HiddenInput)
 
     class Meta:
