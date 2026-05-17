@@ -33,6 +33,7 @@ _allowed = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 _railway_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "")
 if _railway_domain:
     _allowed.append(_railway_domain)
+_allowed.append("healthcheck.railway.app")
 ALLOWED_HOSTS = _allowed
 
 # Application definition
